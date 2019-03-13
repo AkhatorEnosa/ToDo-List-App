@@ -15,16 +15,24 @@ function createNewElement(){
 		var deleteButton = document.createElement("button");
 		deleteButton.appendChild(document.createTextNode("delete"));
 		deleteButton.className = "delete";
+		var checkBox = document.createElement("input");
+		checkBox.type = "checkbox";
+		checkBox.id = "checkbox";
+		li.insertAdjacentElement("afterbegin", checkBox);
 		li.appendChild(document.createTextNode(input.value));
 		li.appendChild(deleteButton);
 		li.className = "list";
-		ul.appendChild(li);
+		ul.insertAdjacentElement("afterbegin", li);
 		input.value = "";
 }
 
-function strikeThrough(e){
-	if(e.target.matches("li.list")){
-		e.target.classList.toggle("done");
+function doneItem(e){
+	if(e.target.matches("input#checkbox") && e.target.checked){
+		e.target.parentNode.classList.add("done");
+		this.appendChild(e.target.parentNode); //Or e.target.parentNode.parentNode.appendChild(e.target.parentNode);
+	}else{
+		e.target.parentNode.classList.remove("done");
+		this.insertAdjacentElement("afterbegin", e.target.parentNode); //Or e.target.parentNode.parentNode.insertAdjacentElement(e.target.parentNode);
 	}
 }
 
@@ -35,8 +43,10 @@ function deleteItem(e){
 	} 
 }
 
+// window.addEventListener("load", itemIsPresent);
+
 button.addEventListener("click", doAfterClick); //Create a new item
 
-ul.addEventListener("click", strikeThrough); //Create a new item
+ul.addEventListener("click", doneItem); //Done item
 
 ul.addEventListener("click", deleteItem); //Delete an item
